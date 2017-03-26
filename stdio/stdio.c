@@ -12,13 +12,13 @@ const int vga_w_minus_one = 79;
 
 void _scroll(void) {
 	// _scroll(); is a function that scrolls the screen.
-	for (int yf = 0; yf < 25; yf++) {
-		for (int xf = 0; xf < 80; xf++) {
-			vptr[yf * vga_width + xf] = vptr[(yf - 1) * 80 + xf];
+	for (int yf = 1; yf < vga_height; yf++) {
+		for (int xf = 0; xf < vga_width; xf++) {
+			vptr[yf * vga_width + xf] = vptr[(yf - 1) * vga_width + xf];
 		}
 	}
 	// We should clear the last line with zeroes.
-	for (int xf = 0; xf < 80; xf++) {
+	for (int xf = 0; xf < vga_width; xf++) {
 		vptr[vga_height * vga_width + xf] = (uint16_t)0x0000;
 	}
 	// Now we should update the position.
@@ -27,7 +27,7 @@ void _scroll(void) {
 }
 
 size_t _strlen(const char* string) {
-	int len = 0;
+	size_t len = 0;
 	while (string[len] != '\0') {
 		len++;
 	}
@@ -71,10 +71,7 @@ void printc(byte character, uint8_t color_bc, uint8_t color_fc) {
 	uint8_t color_var = (uint8_t)((color_bc << 4) | (color_fc | 0x0F));
 	uint16_t _character = character | (color_var << 8);
 	vptr[y * vga_width * x] = _character;
-	if (x >= vga_width && y >= vga_height) {
-		_scroll();
-		return;
-	} else if (x >= vga_width) {
+	if (x >= vga_width) {
 		x = 0;
 		y++;
 		return;
