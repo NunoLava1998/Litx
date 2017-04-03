@@ -6,7 +6,9 @@ i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 pause
 i686-elf-gcc -c stdio/stdio.c -o stdio.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -Wpedantic -Wshadow -s
 pause
-i686-elf-gcc -T linker.ld -o os.bin -ffreestanding -O2 -nostdlib boot.o kernel.o stdio.o -lgcc -s
+i686-elf-gcc -c gdt/gdt.c -o gdt.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra -Wpedantic -Wshadow -s
+pause
+i686-elf-gcc -T linker.ld -o os.bin -ffreestanding -O2 -nostdlib boot.o kernel.o stdio.o gdt.o -lgcc -s
 
 pause
 
