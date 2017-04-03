@@ -14,7 +14,7 @@ void _scroll(void) {
 	// _scroll(); is a function that scrolls the screen.
 	for (int yf = 1; yf < vga_h_minus_one; yf++) {
 		for (int xf = 0; xf < vga_width; xf++) {
-			vptr[(yf - 1) * vga_width + xf] = vptr[yf * vga_width + xf];
+			vptr[yf * vga_width + xf] = vptr[(yf + 1) * vga_width + xf];
 		}
 	}
 	// We should clear the last line with zeroes.
@@ -88,4 +88,14 @@ void prints(const char* string, uint8_t color_bc, uint8_t color_fc) {
 			printc(string[i], color_bc, color_fc);
 	}
 	return;
+}
+
+void clear_screen(void) {
+	x = 0;
+	y = 0;
+	for (int i = 0; i < (vga_width * vga_height); i++) {
+		printc(0, 0, 0);
+	}
+	x = 0;
+	y = 0;
 }
